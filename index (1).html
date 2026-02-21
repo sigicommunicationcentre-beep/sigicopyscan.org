@@ -3,58 +3,828 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sigicopyscan</title>
+    <title>Sigi Communication Centre - Your All-in-One Business Shop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* Pure CSS Logo Design */
-        .logo {
-            /* Add styles for the animated logo here */
-            background: linear-gradient(45deg, #ff6b6b, #f7a6a6);
-            animation: logo-animation 2s infinite alternate;
-        }
-        @keyframes logo-animation {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --sigi-navy: #000080; 
+            --sigi-blue: #0000cc;
+            --sigi-accent: #3b82f6;
         }
 
-        /* Improved Branch Cards */
-        .branch-card {
-            transition: transform 0.3s;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 10px;
-            cursor: pointer;
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            background-color: #f8fafc;
         }
-        .branch-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+
+        .bg-sigi-navy { background-color: var(--sigi-navy); }
+        .text-sigi-navy { color: var(--sigi-navy); }
+        .border-sigi-navy { border-color: var(--sigi-navy); }
+
+        /* Navigation Styles */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.4s ease;
         }
-        /* Contact information styles */
-        .contact-info {
-            font-size: 1.1em;
-            margin-top: 1em;
+
+        .nav-item-container:hover .nav-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
+
+        .nav-dropdown {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(15px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 128, 0.15);
+        }
+
+        /* Hero & Gradients */
+        .hero-gradient {
+            background: linear-gradient(135deg, var(--sigi-navy) 0%, var(--sigi-blue) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-pattern {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background-image: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* Interactive Elements */
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 40px -10px rgba(0, 0, 128, 0.1);
+        }
+
+        .ai-pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+        /* Sections & Views */
+        .view-hidden { display: none; }
+        
+        .custom-scroll::-webkit-scrollbar { width: 5px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: var(--sigi-navy); border-radius: 10px; }
+
+        /* Responsive Mobile Adjustments */
+        @media (max-width: 768px) {
+            .nav-dropdown { position: fixed; left: 5%; width: 90%; top: 80px; }
+            .hero-title { font-size: 2.5rem; }
+        }
+
+        .section-anchor { scroll-margin-top: 120px; }
     </style>
 </head>
 <body>
-    <div class="logo">
-        <!-- Your logo SVG will be replaced here -->
+
+    <!-- Utility Navigation (Row 1) -->
+    <div class="bg-sigi-navy text-white text-[11px] font-bold py-2.5 fixed top-0 w-full z-[70]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div class="flex items-center gap-6 overflow-x-auto no-scrollbar whitespace-nowrap">
+                <button onclick="showView('franchise')" class="hover:text-blue-300 transition uppercase tracking-widest flex items-center gap-2">
+                    <i class="fa-solid fa-handshake"></i> Franchise Opportunities
+                </button>
+                <button onclick="toggleBranchList()" class="hover:text-blue-300 transition uppercase tracking-widest flex items-center gap-2">
+                    <i class="fa-solid fa-location-dot"></i> Find a Branch
+                </button>
+                <a href="#logistics-section" onclick="showView('main')" class="hover:text-blue-300 transition uppercase tracking-widest flex items-center gap-2">
+                    <i class="fa-solid fa-box"></i> Track Package
+                </a>
+            </div>
+            <div class="hidden md:flex items-center gap-6">
+                <span class="text-blue-200">2025 INITIATIVE</span>
+                <button onclick="toggleChat()" class="text-white bg-blue-600 px-3 py-1 rounded hover:bg-blue-500 transition">
+                    <i class="fa-solid fa-robot"></i> Chat Now
+                </button>
+            </div>
+        </div>
     </div>
-    <div class="branch-card">
-        <h3>Junction 14 Mall</h3>
-        <div class="contact-info">Phone: 035 001 2396</div>
+
+    <!-- Main Navigation (Row 2 & 3 Combined) -->
+    <nav class="glass-nav fixed w-full z-50 top-[37px] left-0 h-32 md:h-28">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
+            <div class="flex justify-between items-center">
+                <!-- Branding -->
+                <div class="flex items-center gap-4">
+                    <button onclick="showView('main')" class="relative w-14 h-14 bg-sigi-navy rounded-2xl flex items-center justify-center shadow-2xl group overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                        <svg viewBox="0 0 100 100" class="w-10 h-10" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M30 30 C 30 15, 70 15, 70 35 C 70 45, 30 55, 30 65 C 30 85, 70 85, 70 70" stroke="white" stroke-width="12" fill="none" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                    
+                    <div class="flex flex-col">
+                        <div class="cursor-pointer" onclick="showView('main')">
+                            <span class="text-3xl font-black text-sigi-navy tracking-tighter leading-none block">SIGI</span>
+                            <span class="text-[10px] font-extrabold text-blue-600 tracking-[0.3em] uppercase block">Communication Centre</span>
+                        </div>
+                        
+                        <!-- Secondary Nav Row -->
+                        <div class="flex items-center gap-3 text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-1.5 border-t pt-1 border-gray-100">
+                            
+                            <!-- Design Sub -->
+                            <div class="nav-item-container relative">
+                                <a href="#design-section" onclick="showView('main')" class="hover:text-sigi-navy transition flex flex-col">
+                                    <span class="text-sigi-navy/50">Service 01</span> Design
+                                </a>
+                                <div class="nav-dropdown absolute top-full left-0 w-64 bg-white rounded-2xl p-4 mt-2">
+                                    <p class="text-[8px] text-blue-500 mb-3 border-b pb-1">Creative Services</p>
+                                    <ul class="space-y-2.5 text-[10px] normal-case tracking-normal">
+                                        <li><a href="#logo-branding" onclick="showView('main')" class="hover:text-sigi-navy flex items-center gap-2"><i class="fa-solid fa-pen-nib"></i> Logo & Brand Development</a></li>
+                                        <li><a href="#business-profiles" onclick="showView('main')" class="hover:text-sigi-navy flex items-center gap-2"><i class="fa-solid fa-file-invoice"></i> Company & Business Profiles</a></li>
+                                        <li><a href="#stationery" onclick="showView('main')" class="hover:text-sigi-navy flex items-center gap-2"><i class="fa-solid fa-envelopes-bulk"></i> Corporate Stationery</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <span class="h-4 w-[1px] bg-gray-200"></span>
+
+                            <!-- Print Sub -->
+                            <div class="nav-item-container relative">
+                                <a href="#print-section" onclick="showView('main')" class="hover:text-sigi-navy transition flex flex-col">
+                                    <span class="text-sigi-navy/50">Service 02</span> Print
+                                </a>
+                                <div class="nav-dropdown absolute top-full left-0 w-64 bg-white rounded-2xl p-4 mt-2">
+                                    <p class="text-[8px] text-blue-500 mb-3 border-b pb-1">Production Hub</p>
+                                    <ul class="space-y-2.5 text-[10px] normal-case tracking-normal">
+                                        <li><a href="#bulk-print" onclick="showView('main')" class="hover:text-sigi-navy flex items-center gap-2"><i class="fa-solid fa-copy"></i> High Volume Copy & Print</a></li>
+                                        <li><a href="#photo-print" onclick="showView('main')" class="hover:text-sigi-navy flex items-center gap-2"><i class="fa-solid fa-camera"></i> Kodak Photo Printing</a></li>
+                                        <li><a href="#large-format" onclick="showView('main')" class="hover:text-sigi-navy flex items-center gap-2"><i class="fa-solid fa-images"></i> Posters & Large Format</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <span class="h-4 w-[1px] bg-gray-200"></span>
+
+                            <!-- Send Sub -->
+                            <div class="nav-item-container relative">
+                                <a href="#logistics-section" onclick="showView('main')" class="hover:text-sigi-navy transition flex flex-col">
+                                    <span class="text-sigi-navy/50">Service 03</span> Send
+                                </a>
+                                <div class="nav-dropdown absolute top-full left-0 w-64 bg-white rounded-2xl p-4 mt-2">
+                                    <p class="text-[8px] text-blue-500 mb-3 border-b pb-1">Logistics Partners</p>
+                                    <ul class="space-y-2.5 text-[10px] normal-case tracking-normal">
+                                        <li><a href="#skynet" onclick="showView('main')" class="hover:text-sigi-navy flex items-center gap-2"><i class="fa-solid fa-globe"></i> Skynet Worldwide Express</a></li>
+                                        <li><a href="#tcg" onclick="showView('main')" class="hover:text-sigi-navy flex items-center gap-2"><i class="fa-solid fa-van-shuttle"></i> The Courier Guy Local</a></li>
+                                        <li><a href="#intl-freight" onclick="showView('main')" class="hover:text-sigi-navy flex items-center gap-2"><i class="fa-solid fa-plane-up"></i> International Air Freight</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <span class="h-4 w-[1px] bg-gray-200"></span>
+
+                            <!-- Admin Sub -->
+                            <div class="nav-item-container relative">
+                                <a href="#admin-section" onclick="showView('main')" class="hover:text-sigi-navy transition flex flex-col">
+                                    <span class="text-sigi-navy/50">Service 04</span> Admin
+                                </a>
+                                <div class="nav-dropdown absolute top-full right-0 w-64 bg-white rounded-2xl p-4 mt-2">
+                                    <p class="text-[8px] text-blue-500 mb-3 border-b pb-1">Business Compliance</p>
+                                    <ul class="space-y-2.5 text-[10px] normal-case tracking-normal">
+                                        <li><a href="#cipc" onclick="showView('main')" class="hover:text-sigi-navy flex items-center gap-2"><i class="fa-solid fa-building"></i> CIPC Company Registration</a></li>
+                                        <li><a href="#sars" onclick="showView('main')" class="hover:text-sigi-navy flex items-center gap-2"><i class="fa-solid fa-file-shield"></i> SARS Tax Clearance Pin</a></li>
+                                        <li><a href="#tenders" onclick="showView('main')" class="hover:text-sigi-navy flex items-center gap-2"><i class="fa-solid fa-gavel"></i> Tender Submission Help</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Desktop CTA -->
+                <div class="hidden lg:flex items-center gap-6">
+                    <button onclick="showView('franchise')" class="text-sigi-navy font-bold hover:text-blue-600 transition">Investment</button>
+                    <button onclick="showView('franchise')" class="bg-sigi-navy text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-800 transition shadow-lg flex items-center gap-2">
+                        Partner With Us <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN HOME VIEW -->
+    <div id="main-view" class="pt-32">
+        <!-- Hero -->
+        <header class="hero-gradient min-h-[85vh] flex items-center text-white">
+            <div class="hero-pattern"></div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative py-20">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div class="fade-in">
+                        <div class="inline-flex items-center gap-3 bg-white/10 border border-white/20 px-4 py-2 rounded-full mb-8 backdrop-blur-xl">
+                            <span class="w-2 h-2 bg-green-400 rounded-full ai-pulse"></span>
+                            <span class="text-xs font-bold uppercase tracking-[0.2em]">Established 2021 | 2025 Vision</span>
+                        </div>
+                        <h1 class="text-5xl md:text-7xl font-extrabold leading-[1.1] mb-8 hero-title">
+                            Your <span class="text-blue-400">Essential Services</span> Retailer.
+                        </h1>
+                        <p class="text-lg text-blue-100 mb-10 max-w-xl leading-relaxed">
+                            A complete turnkey solution for entrepreneurs. We offer high-volume printing, global logistics, and business compliance under one roof.
+                        </p>
+                        <div class="flex flex-wrap gap-5">
+                            <button onclick="showView('franchise')" class="bg-white text-sigi-navy px-10 py-5 rounded-2xl font-bold text-lg hover:bg-gray-100 transition shadow-2xl flex items-center gap-3">
+                                <i class="fa-solid fa-rocket"></i> View Franchise Options
+                            </button>
+                            <button onclick="toggleBranchList()" class="bg-blue-600/30 border border-white/30 backdrop-blur-md px-10 py-5 rounded-2xl font-bold text-lg hover:bg-white/20 transition flex items-center gap-3">
+                                <i class="fa-solid fa-truck"></i> Send & Pick up Parcel
+                            </button>
+                        </div>
+                        
+                        <!-- Mini Branch List Overlay -->
+                        <div id="branch-finder" class="hidden mt-10 p-8 bg-white rounded-[2.5rem] text-sigi-navy shadow-2xl fade-in max-w-md border border-gray-100">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="font-black text-2xl tracking-tighter">Our Branches</h3>
+                                <button onclick="toggleBranchList()" class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 hover:text-red-500"><i class="fa-solid fa-xmark"></i></button>
+                            </div>
+                            <div class="space-y-4 max-h-72 overflow-y-auto custom-scroll pr-3">
+                                <div class="p-4 bg-gray-50 rounded-2xl hover:bg-blue-50 transition border border-gray-100 group">
+                                    <p class="font-bold group-hover:text-blue-600">Junction 14 Mall</p>
+                                    <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Richards Bay</p>
+                                    <div class="flex justify-between items-center mt-3">
+                                        <span class="text-xs font-semibold"><i class="fa-solid fa-phone mr-2 text-blue-500"></i> 035 001 2396</span>
+                                        <button class="text-[10px] bg-sigi-navy text-white px-3 py-1 rounded-full">Direction</button>
+                                    </div>
+                                </div>
+                                <div class="p-4 bg-gray-50 rounded-2xl hover:bg-blue-50 transition border border-gray-100 group">
+                                    <p class="font-bold group-hover:text-blue-600">Checkers Centre</p>
+                                    <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Richards Bay</p>
+                                    <div class="flex justify-between items-center mt-3">
+                                        <span class="text-xs font-semibold"><i class="fa-solid fa-phone mr-2 text-blue-500"></i> 087 093 5187</span>
+                                        <button class="text-[10px] bg-sigi-navy text-white px-3 py-1 rounded-full">Direction</button>
+                                    </div>
+                                </div>
+                                <div class="p-4 bg-gray-50 rounded-2xl hover:bg-blue-50 transition border border-gray-100 group">
+                                    <p class="font-bold group-hover:text-blue-600">Esikhawini Mall</p>
+                                    <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Main Road</p>
+                                    <div class="flex justify-between items-center mt-3">
+                                        <span class="text-xs font-semibold">Store Visit Only</span>
+                                        <button class="text-[10px] bg-sigi-navy text-white px-3 py-1 rounded-full">Direction</button>
+                                    </div>
+                                </div>
+                                <div class="p-4 bg-gray-50 rounded-2xl hover:bg-blue-50 transition border border-gray-100 group">
+                                    <p class="font-bold group-hover:text-blue-600">Mbazwana Centre</p>
+                                    <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Sodwana Rd</p>
+                                    <div class="flex justify-between items-center mt-3">
+                                        <span class="text-xs font-semibold">Store Visit Only</span>
+                                        <button class="text-[10px] bg-sigi-navy text-white px-3 py-1 rounded-full">Direction</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-5">
+                        <div class="bg-white/10 p-8 rounded-[2.5rem] backdrop-blur-md border border-white/10 shadow-2xl mt-12">
+                            <div class="w-12 h-12 bg-blue-400 rounded-xl flex items-center justify-center mb-6 shadow-lg"><i class="fa-solid fa-shield-halved text-2xl"></i></div>
+                            <h4 class="font-black text-xl mb-2">SARS Compliance</h4>
+                            <p class="text-blue-200 text-xs mb-6 uppercase tracking-widest">Tax Clearance Pin</p>
+                            <span class="text-3xl font-black">R1790</span>
+                        </div>
+                        <div class="bg-white/10 p-8 rounded-[2.5rem] backdrop-blur-md border border-white/10 shadow-2xl">
+                            <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mb-6 shadow-lg"><i class="fa-solid fa-file-contract text-2xl"></i></div>
+                            <h4 class="font-black text-xl mb-2">Tender Prep</h4>
+                            <p class="text-blue-200 text-xs mb-6 uppercase tracking-widest">Professional Submission</p>
+                            <span class="text-3xl font-black">R4290</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Guidance Worldwide Section (Detailed) -->
+        <section class="py-24 bg-white relative overflow-hidden" id="guidance-worldwide">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+                <div class="flex flex-col items-center text-center mb-20">
+                    <span class="text-blue-600 font-bold tracking-[0.3em] uppercase text-xs mb-4">Strategic Vision</span>
+                    <h2 class="text-4xl md:text-5xl font-black text-sigi-navy mb-6 tracking-tighter">Guidance Worldwide</h2>
+                    <div class="h-1.5 w-24 bg-blue-600 rounded-full mb-8"></div>
+                    <p class="max-w-3xl text-gray-500 text-lg leading-relaxed">
+                        "Since its conception in 2021, the Sigi Communication Centre concept has proven to be an excellent investment opportunity with a healthy rate of return."
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-10">
+                    <div class="p-10 rounded-[2.5rem] bg-gray-50 border border-gray-100 card-hover">
+                        <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-sigi-navy text-2xl mb-8 shadow-sm">
+                            <i class="fa-solid fa-rotate"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-sigi-navy mb-4">Constant Adaptation</h4>
+                        <p class="text-sm text-gray-500 leading-relaxed">
+                            We continue to adapt our business model in the ever-changing environment, ensuring the concept stays fresh and relevant in the market place.
+                        </p>
+                    </div>
+                    <div class="p-10 rounded-[2.5rem] bg-sigi-navy text-white card-hover shadow-2xl">
+                        <div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center text-blue-400 text-2xl mb-8 border border-white/10">
+                            <i class="fa-solid fa-earth-americas"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4">Market Reach</h4>
+                        <p class="text-sm text-blue-100 leading-relaxed">
+                            Our goal is to reach every corner of the market, offering essential postal, business, and communication services locally and globally.
+                        </p>
+                    </div>
+                    <div class="p-10 rounded-[2.5rem] bg-gray-50 border border-gray-100 card-hover">
+                        <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-sigi-navy text-2xl mb-8 shadow-sm">
+                            <i class="fa-solid fa-users-gear"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-sigi-navy mb-4">Strategic Alliances</h4>
+                        <p class="text-sm text-gray-500 leading-relaxed">
+                            Leveraging world-class infrastructure through global partnerships with Skynet Worldwide Express and Kodak Moments.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Design & Branding Detail Section -->
+        <section id="design-section" class="py-24 bg-gray-50 section-anchor">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-2 gap-20 items-center">
+                    <div class="relative">
+                        <div class="absolute -top-10 -left-10 w-40 h-40 bg-blue-600/5 rounded-full blur-3xl"></div>
+                        <h2 class="text-4xl md:text-5xl font-black text-sigi-navy mb-8 tracking-tighter">Design & Visual <br/><span class="text-blue-600">Brand Identity</span></h2>
+                        <p class="text-gray-600 text-lg mb-10 leading-relaxed">
+                            Our in-house design studio creates professional identities that set your business apart. We don't just design; we build brands that communicate credibility.
+                        </p>
+                        
+                        <div class="space-y-6">
+                            <div id="logo-branding" class="flex gap-6 p-6 bg-white rounded-3xl shadow-sm border border-gray-100 group hover:border-blue-200 transition">
+                                <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition shadow-inner">
+                                    <i class="fa-solid fa-pen-nib text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sigi-navy text-lg">Logo & Brand Development</h4>
+                                    <p class="text-sm text-gray-500 mt-1">Full brand kits including typography, color palettes, and guidelines.</p>
+                                </div>
+                            </div>
+                            <div id="business-profiles" class="flex gap-6 p-6 bg-white rounded-3xl shadow-sm border border-gray-100 group hover:border-blue-200 transition">
+                                <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition shadow-inner">
+                                    <i class="fa-solid fa-file-invoice text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sigi-navy text-lg">Company Profiles</h4>
+                                    <p class="text-sm text-gray-500 mt-1">High-impact company profiles tailored for tender applications and pitches.</p>
+                                </div>
+                            </div>
+                            <div id="stationery" class="flex gap-6 p-6 bg-white rounded-3xl shadow-sm border border-gray-100 group hover:border-blue-200 transition">
+                                <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition shadow-inner">
+                                    <i class="fa-solid fa-address-card text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sigi-navy text-lg">Corporate Stationery</h4>
+                                    <p class="text-sm text-gray-500 mt-1">Business cards, letterheads, email signatures, and office branding.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="bg-sigi-navy rounded-[4rem] p-16 text-white text-center shadow-2xl overflow-hidden">
+                            <div class="absolute inset-0 bg-blue-600/10 mix-blend-overlay"></div>
+                            <div class="relative z-10">
+                                <div class="w-24 h-24 bg-white/10 rounded-[2rem] flex items-center justify-center mx-auto mb-10 border border-white/20">
+                                    <i class="fa-solid fa-palette text-5xl"></i>
+                                </div>
+                                <h3 class="text-3xl font-black mb-6 tracking-tight">Visual Identity Experts</h3>
+                                <p class="text-blue-200 text-lg leading-relaxed italic">
+                                    "We transform business concepts into visual realities that resonate with your target market."
+                                </p>
+                                <button onclick="toggleChat('I want to start a logo design project')" class="mt-12 bg-white text-sigi-navy px-10 py-4 rounded-2xl font-black hover:bg-blue-50 transition">Get a Quote</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Service Production Grids -->
+        <section class="py-24 bg-white" id="print-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-20">
+                    <h2 class="text-4xl md:text-5xl font-black text-sigi-navy mb-4 tracking-tighter">Expert Production</h2>
+                    <p class="text-gray-400 font-bold uppercase tracking-[0.3em] text-[10px]">Print | Scan | Kodak Moments</p>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div id="bulk-print" class="bg-gray-50 p-10 rounded-[3rem] border border-gray-100 card-hover">
+                        <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-blue-600 text-2xl mb-8 shadow-sm"><i class="fa-solid fa-copy"></i></div>
+                        <h3 class="text-2xl font-black text-sigi-navy mb-4">Bulk Copy & Scan</h3>
+                        <p class="text-sm text-gray-500 leading-relaxed mb-8">High-speed digital scanning and high-volume black & white or full-color printing services for any scale.</p>
+                        <ul class="space-y-3 text-xs font-bold text-gray-400">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Plan Printing (A0, A1, A2)</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Document Binding</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Laminating Services</li>
+                        </ul>
+                    </div>
+                    <div id="photo-print" class="bg-sigi-navy p-10 rounded-[3rem] text-white card-hover shadow-2xl relative overflow-hidden">
+                        <div class="absolute -right-10 -bottom-10 opacity-10"><i class="fa-solid fa-camera-retro text-[15rem]"></i></div>
+                        <div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center text-yellow-400 text-2xl mb-8 border border-white/10"><i class="fa-solid fa-camera"></i></div>
+                        <h3 class="text-2xl font-black mb-4">Kodak Moments</h3>
+                        <p class="text-sm text-blue-100 leading-relaxed mb-8">Professional photographic printing. Print your phone photos instantly in-store at our premium Kodak station.</p>
+                        <ul class="space-y-3 text-xs font-bold text-blue-300">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-white"></i> Instant Phone Printing</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-white"></i> Canvas Printing</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-white"></i> Personalized Photo Gifts</li>
+                        </ul>
+                    </div>
+                    <div id="large-format" class="bg-gray-50 p-10 rounded-[3rem] border border-gray-100 card-hover">
+                        <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-blue-600 text-2xl mb-8 shadow-sm"><i class="fa-solid fa-images"></i></div>
+                        <h3 class="text-2xl font-black text-sigi-navy mb-4">Large Format</h3>
+                        <p class="text-sm text-gray-500 leading-relaxed mb-8">Premium poster printing, signage, and vinyl decals. Ideal for event marketing and store branding.</p>
+                        <ul class="space-y-3 text-xs font-bold text-gray-400">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> PVC Banners</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> Pull-up Banners</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> High-Gloss Posters</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Courier & Logistics Section -->
+        <section id="logistics-section" class="py-24 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-white rounded-[4rem] shadow-2xl overflow-hidden border border-gray-100">
+                    <div class="grid lg:grid-cols-2">
+                        <div class="p-16 lg:p-24 flex flex-col justify-center">
+                            <span class="text-blue-600 font-bold uppercase text-xs tracking-widest mb-4">Worldwide Logistics</span>
+                            <h2 class="text-4xl md:text-5xl font-black text-sigi-navy mb-8 tracking-tighter">Domestic & International <br/>Courier Solutions</h2>
+                            <p class="text-gray-600 text-lg mb-10 leading-relaxed">
+                                Sigi has partnered with the leaders in worldwide delivery to ensure your parcels arrive safely and on time, every time.
+                            </p>
+                            <div class="grid sm:grid-cols-2 gap-8 mb-12">
+                                <div id="skynet" class="p-6 bg-gray-50 rounded-3xl border border-gray-100">
+                                    <div class="font-black text-sigi-navy mb-2">Skynet Worldwide</div>
+                                    <p class="text-xs text-gray-400">Global freight and express international door-to-door delivery.</p>
+                                </div>
+                                <div id="tcg" class="p-6 bg-gray-50 rounded-3xl border border-gray-100">
+                                    <div class="font-black text-blue-600 mb-2">The Courier Guy</div>
+                                    <p class="text-xs text-gray-400">South Africa's #1 domestic courier for local e-commerce and personal items.</p>
+                                </div>
+                            </div>
+                            <button onclick="toggleBranchList()" class="bg-sigi-navy text-white px-10 py-5 rounded-2xl font-black text-lg hover:bg-blue-800 transition shadow-xl w-fit">Find Nearest Drop-off</button>
+                        </div>
+                        <div class="bg-blue-600 relative overflow-hidden group">
+                            <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center text-white p-12 text-center">
+                                <i class="fa-solid fa-truck-plane text-[10rem] mb-10 opacity-20 group-hover:scale-110 transition duration-700"></i>
+                                <h3 class="text-3xl font-black mb-4">Track Your Parcel</h3>
+                                <p class="text-blue-100 mb-8 max-w-xs">Have a Sigi tracking number? Monitor your shipment's journey in real-time.</p>
+                                <div class="w-full max-w-xs flex gap-2">
+                                    <input type="text" placeholder="Enter Tracking #" class="flex-1 bg-white/10 border border-white/30 rounded-xl px-4 py-3 text-white placeholder:text-blue-200 focus:bg-white/20 outline-none">
+                                    <button class="bg-white text-blue-600 w-12 h-12 rounded-xl flex items-center justify-center font-bold"><i class="fa-solid fa-magnifying-glass"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Business Admin Detail -->
+        <section id="admin-section" class="py-24 bg-white section-anchor">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col items-center text-center mb-20">
+                    <span class="text-blue-600 font-bold tracking-[0.3em] uppercase text-xs mb-4">Business Compliance</span>
+                    <h2 class="text-4xl md:text-5xl font-black text-sigi-navy mb-6 tracking-tighter">Tender & Legal Support</h2>
+                    <p class="max-w-3xl text-gray-500 text-lg">We handle the red tape so you can focus on running your business.</p>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-10">
+                    <div id="cipc" class="p-10 rounded-[3rem] bg-gray-50 border border-gray-100 card-hover">
+                        <h4 class="text-xl font-bold text-sigi-navy mb-4">CIPC Registration</h4>
+                        <p class="text-sm text-gray-500 mb-6">New company formations, director changes, and annual returns.</p>
+                        <div class="flex justify-between items-center pt-6 border-t font-black text-sigi-navy">
+                            <span>From R990</span>
+                            <button onclick="toggleChat('I need a new company registration')" class="text-blue-600"><i class="fa-solid fa-plus-circle"></i></button>
+                        </div>
+                    </div>
+                    <div id="sars" class="p-10 rounded-[3rem] bg-gray-50 border border-gray-100 card-hover">
+                        <h4 class="text-xl font-bold text-sigi-navy mb-4">SARS Compliance</h4>
+                        <p class="text-sm text-gray-500 mb-6">Tax clearance pins, VAT registration, and income tax submissions.</p>
+                        <div class="flex justify-between items-center pt-6 border-t font-black text-sigi-navy">
+                            <span>From R1790</span>
+                            <button onclick="toggleChat('I need a SARS Tax Clearance pin')" class="text-blue-600"><i class="fa-solid fa-plus-circle"></i></button>
+                        </div>
+                    </div>
+                    <div id="tenders" class="p-10 rounded-[3rem] bg-gray-50 border border-gray-100 card-hover">
+                        <h4 class="text-xl font-bold text-sigi-navy mb-4">Tender Submissions</h4>
+                        <p class="text-sm text-gray-500 mb-6">Professional document preparation and administrative submission help.</p>
+                        <div class="flex justify-between items-center pt-6 border-t font-black text-sigi-navy">
+                            <span>From R4290</span>
+                            <button onclick="toggleChat('I need help with a tender application')" class="text-blue-600"><i class="fa-solid fa-plus-circle"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-    <div class="branch-card">
-        <h3>Checkers Centre</h3>
-        <div class="contact-info">Phone: 087 093 5187</div>
+
+    <!-- FRANCHISE VIEW (Expanded) -->
+    <div id="franchise-view" class="view-hidden pt-40 pb-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-20">
+                <span class="text-blue-600 font-bold tracking-[0.3em] uppercase text-xs mb-4 block">Entrepreneurial Opportunity</span>
+                <h2 class="text-5xl md:text-7xl font-black text-sigi-navy mb-10 tracking-tighter leading-none">Investment Packages 2025</h2>
+                <div class="h-2 w-32 bg-blue-600 rounded-full mb-10"></div>
+                <p class="text-2xl text-gray-500 max-w-4xl leading-relaxed font-light">
+                    Sigi Communication Centre Business Centers are an ideal opportunity for those with entrepreneurial spirit looking to exit the corporate world.
+                </p>
+            </div>
+
+            <!-- Detailed Packages Grid -->
+            <div class="space-y-16">
+                <!-- Package A: Turnkey -->
+                <div class="bg-white rounded-[4rem] shadow-2xl border border-gray-100 overflow-hidden relative">
+                    <div class="absolute top-0 right-10 bg-blue-600 text-white px-10 py-3 rounded-b-3xl font-black tracking-widest text-xs uppercase">Option 01</div>
+                    <div class="grid lg:grid-cols-5">
+                        <div class="lg:col-span-3 p-12 lg:p-20">
+                            <h3 class="text-4xl font-black text-sigi-navy mb-6">Full Turnkey Store Setup</h3>
+                            <p class="text-gray-500 mb-10 text-lg">Our most comprehensive package for entrepreneurs looking for high-traffic independent retail sites.</p>
+                            
+                            <div class="grid md:grid-cols-2 gap-10">
+                                <div class="space-y-6">
+                                    <h4 class="font-black text-sigi-navy border-b pb-2 uppercase tracking-widest text-[10px]">Site Metrics</h4>
+                                    <ul class="space-y-4 text-sm text-gray-500">
+                                        <li class="flex gap-3 items-center"><i class="fa-solid fa-check text-blue-600"></i> From 50 - 80 SQM</li>
+                                        <li class="flex gap-3 items-center"><i class="fa-solid fa-check text-blue-600"></i> High-Traffic Independent Sites</li>
+                                        <li class="flex gap-3 items-center"><i class="fa-solid fa-check text-blue-600"></i> Full External Branding</li>
+                                    </ul>
+                                </div>
+                                <div class="space-y-6">
+                                    <h4 class="font-black text-sigi-navy border-b pb-2 uppercase tracking-widest text-[10px]">What's Included</h4>
+                                    <ul class="space-y-4 text-sm text-gray-500">
+                                        <li>• Equipment and Full Shopfitting</li>
+                                        <li>• Computerized POS Systems</li>
+                                        <li>• Uniforms and Identity Badges</li>
+                                        <li>• Professional Website Presence</li>
+                                        <li>• 5-Day Instore + On-site Training</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-2 bg-gray-50 p-12 lg:p-20 flex flex-col justify-center text-center">
+                            <span class="text-gray-400 font-bold uppercase tracking-[0.3em] text-[10px] mb-4">Total Investment</span>
+                            <div class="text-6xl font-black text-sigi-navy mb-2 tracking-tighter">R595,000</div>
+                            <div class="text-xl font-bold text-blue-600 mb-10 tracking-widest">+ VAT</div>
+                            <div class="space-y-3 mb-12">
+                                <div class="flex justify-between text-xs font-bold text-gray-400 uppercase"><span>Typical NPP</span> <span class="text-sigi-navy">28%</span></div>
+                                <div class="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden"><div class="bg-blue-600 h-full w-[28%]"></div></div>
+                            </div>
+                            <button onclick="toggleChat('I want to discuss the R595k Turnkey package')" class="bg-sigi-navy text-white px-10 py-5 rounded-2xl font-black text-lg hover:bg-blue-800 transition shadow-xl">Enquire Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Package B: Express -->
+                <div class="bg-sigi-navy text-white rounded-[4rem] shadow-2xl overflow-hidden relative group">
+                    <div class="absolute top-0 right-10 bg-white text-sigi-navy px-10 py-3 rounded-b-3xl font-black tracking-widest text-xs uppercase">Option 02</div>
+                    <div class="grid lg:grid-cols-5">
+                        <div class="lg:col-span-3 p-12 lg:p-20">
+                            <h3 class="text-4xl font-black mb-6">Express Satellite Hub</h3>
+                            <p class="text-blue-200 mb-10 text-lg">Designed for high-traffic areas requiring a smaller footprint. Focuses on core logistics and essential digital admin.</p>
+                            
+                            <div class="grid md:grid-cols-2 gap-10">
+                                <div class="space-y-6">
+                                    <h4 class="font-black text-white/50 border-b border-white/10 pb-2 uppercase tracking-widest text-[10px]">Site Metrics</h4>
+                                    <ul class="space-y-4 text-sm text-blue-100">
+                                        <li class="flex gap-3 items-center"><i class="fa-solid fa-check text-blue-400"></i> From 20 - 30 SQM</li>
+                                        <li class="flex gap-3 items-center"><i class="fa-solid fa-check text-blue-400"></i> Mall Kiosks / Shared Spaces</li>
+                                        <li class="flex gap-3 items-center"><i class="fa-solid fa-check text-blue-400"></i> High Impact Branding</li>
+                                    </ul>
+                                </div>
+                                <div class="space-y-6">
+                                    <h4 class="font-black text-white/50 border-b border-white/10 pb-2 uppercase tracking-widest text-[10px]">What's Included</h4>
+                                    <ul class="space-y-4 text-sm text-blue-100">
+                                        <li>• Core Printing Hardware</li>
+                                        <li>• Skynet Partner Integration</li>
+                                        <li>• Mobile POS & Cloud Admin</li>
+                                        <li>• National Brand Recognition</li>
+                                        <li>• Full Operational Manuals</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-2 bg-blue-600/20 p-12 lg:p-20 flex flex-col justify-center text-center backdrop-blur-3xl">
+                            <span class="text-blue-300 font-bold uppercase tracking-[0.3em] text-[10px] mb-4">Total Investment</span>
+                            <div class="text-6xl font-black text-white mb-2 tracking-tighter">R350,000</div>
+                            <div class="text-xl font-bold text-blue-400 mb-10 tracking-widest">+ VAT</div>
+                            <button onclick="toggleChat('Tell me about the R350k Express Satellite Hub')" class="bg-white text-sigi-navy px-10 py-5 rounded-2xl font-black text-lg hover:bg-gray-100 transition shadow-xl">Request Info</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Typical Financials -->
+                <div class="py-16 text-center">
+                    <h4 class="text-sigi-navy font-black text-2xl mb-12">Projected Financial Framework</h4>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100">
+                            <div class="text-blue-600 font-black text-4xl mb-2">34%</div>
+                            <div class="text-gray-400 font-bold uppercase text-[10px] tracking-widest">Cost of Sale (COS)</div>
+                        </div>
+                        <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100">
+                            <div class="text-sigi-navy font-black text-4xl mb-2">38%</div>
+                            <div class="text-gray-400 font-bold uppercase text-[10px] tracking-widest">Overhead Costs (OH)</div>
+                        </div>
+                        <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-blue-600">
+                            <div class="text-green-600 font-black text-4xl mb-2">28%</div>
+                            <div class="text-gray-400 font-bold uppercase text-[10px] tracking-widest">Net Profit (NPP)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="branch-card">
-        <h3>Esikhawini Mall</h3>
-        <div class="contact-info">Phone: 035 001 0456</div>
+
+    <!-- AI Chat System -->
+    <div id="ai-chat-window" class="fixed bottom-8 right-8 z-[100] flex flex-col items-end">
+        <div id="ai-bubble" class="hidden bg-white w-[380px] h-[550px] mb-6 rounded-[2.5rem] shadow-2xl border border-gray-100 flex-col overflow-hidden fade-in">
+            <div class="bg-sigi-navy p-6 text-white flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-blue-500 rounded-2xl flex items-center justify-center shadow-lg"><i class="fa-solid fa-robot"></i></div>
+                    <div>
+                        <p class="font-black text-sm tracking-tight">Sigi AI Assistant</p>
+                        <p class="text-[10px] text-blue-300 font-bold flex items-center gap-1"><span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span> Online & Ready</p>
+                    </div>
+                </div>
+                <button onclick="toggleChat()" class="w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div id="chat-history" class="flex-1 p-6 overflow-y-auto space-y-4 bg-gray-50/50 text-sm custom-scroll">
+                <div class="bg-blue-100 text-sigi-navy p-4 rounded-[1.5rem] rounded-tl-none mr-12 shadow-sm">
+                    Hi! I'm Sigi AI. I'm here to answer questions about our **Franchise Opportunities**, **SARS Compliance (R1790)**, or help you find one of our **Richards Bay** branches. How can I help?
+                </div>
+            </div>
+            
+            <div class="p-6 bg-white border-t border-gray-100">
+                <div class="flex gap-2">
+                    <input id="chat-input" type="text" placeholder="Ask about investment costs..." class="flex-1 bg-gray-50 border-none rounded-2xl px-5 py-3 text-sm focus:ring-2 focus:ring-blue-500 transition outline-none" onkeypress="if(event.key==='Enter') sendMessage()">
+                    <button onclick="sendMessage()" class="bg-sigi-navy text-white w-12 h-12 rounded-2xl flex items-center justify-center hover:bg-blue-800 transition shadow-lg"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+        
+        <button onclick="toggleChat()" class="bg-sigi-navy text-white w-20 h-20 rounded-[2rem] shadow-2xl flex items-center justify-center text-3xl hover:scale-110 transition border-4 border-white active:scale-95">
+            <i class="fa-solid fa-message-dots"></i>
+        </button>
     </div>
-    <div class="branch-card">
-        <h3>Mbazwana Crossing Mall</h3>
-        <div class="contact-info">Phone: 035 001 2397</div>
-    </div>
+
+    <!-- Footer -->
+    <footer class="bg-sigi-navy text-white pt-24 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-12 mb-20">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-3 mb-8">
+                        <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-sigi-navy font-black">S</div>
+                        <span class="text-2xl font-black tracking-tighter">SIGI <span class="text-blue-400">Communication</span></span>
+                    </div>
+                    <p class="text-blue-200 text-sm leading-relaxed max-w-sm mb-8">
+                        Established in 2021 as your essential services retailer. We bridge the gap between global infrastructure and local business success.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-blue-600 transition"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-blue-600 transition"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-blue-600 transition"><i class="fa-brands fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h5 class="font-black text-xs uppercase tracking-[0.3em] mb-8 text-blue-400">Essential Hubs</h5>
+                    <ul class="space-y-4 text-sm text-blue-100">
+                        <li><a href="#" class="hover:text-white transition">Junction 14 Richards Bay</a></li>
+                        <li><a href="#" class="hover:text-white transition">Checkers Centre Bay</a></li>
+                        <li><a href="#" class="hover:text-white transition">Esikhawini Mall</a></li>
+                        <li><a href="#" class="hover:text-white transition">Mbazwana Centre</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-black text-xs uppercase tracking-[0.3em] mb-8 text-blue-400">Opportunities</h5>
+                    <ul class="space-y-4 text-sm text-blue-100">
+                        <li><button onclick="showView('franchise')" class="hover:text-white transition">Full Turnkey Opening</button></li>
+                        <li><button onclick="showView('franchise')" class="hover:text-white transition">Express Satellite Hub</button></li>
+                        <li><button onclick="showView('franchise')" class="hover:text-white transition">Investor Relations</button></li>
+                        <li><a href="#" class="hover:text-white transition">Partner Program</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-bold text-blue-400/50 tracking-widest uppercase">
+                <p>© 2025 Sigi Communication Centre. All rights reserved.</p>
+                <div class="flex gap-8">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Investment</a>
+                    <a href="#">BEE Certificate</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const apiKey = ""; // Runtime key injection
+
+        function showView(name) {
+            const main = document.getElementById('main-view');
+            const franchise = document.getElementById('franchise-view');
+            
+            if (name === 'franchise') {
+                main.classList.add('view-hidden');
+                franchise.classList.remove('view-hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                franchise.classList.add('view-hidden');
+                main.classList.remove('view-hidden');
+            }
+        }
+
+        function toggleBranchList() {
+            const el = document.getElementById('branch-finder');
+            el.classList.toggle('hidden');
+            if (!el.classList.contains('hidden')) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function toggleChat(prefill = "") {
+            const bubble = document.getElementById('ai-bubble');
+            bubble.classList.toggle('hidden');
+            bubble.classList.toggle('flex');
+            
+            if (prefill) {
+                const input = document.getElementById('chat-input');
+                input.value = prefill;
+                sendMessage();
+            }
+        }
+
+        async function callGemini(prompt, sys) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }],
+                        systemInstruction: { parts: [{ text: sys }] }
+                    })
+                });
+                const data = await response.json();
+                return data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm sorry, I'm having trouble connecting to Sigi servers.";
+            } catch (e) {
+                return "I'm currently offline. Please call one of our Richards Bay branches for immediate assistance!";
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const history = document.getElementById('chat-history');
+            const text = input.value.trim();
+            if (!text) return;
+
+            // User Message
+            const userMsg = document.createElement('div');
+            userMsg.className = "bg-sigi-navy text-white p-4 rounded-[1.5rem] rounded-tr-none ml-12 text-right shadow-sm mb-4";
+            userMsg.innerText = text;
+            history.appendChild(userMsg);
+            input.value = "";
+            history.scrollTop = history.scrollHeight;
+
+            // AI Placeholder
+            const aiMsg = document.createElement('div');
+            aiMsg.className = "bg-blue-100 text-sigi-navy p-4 rounded-[1.5rem] rounded-tl-none mr-12 ai-pulse mb-4";
+            aiMsg.innerText = "Consulting Sigi Knowledge Base...";
+            history.appendChild(aiMsg);
+
+            const sys = `You are the Sigi AI Assistant. 
+            Franchise Costs: Turnkey R595k, Express R350k.
+            Services: SARS Tax Pin (R1790), Tenders (R4290), Printing (Bulk/Kodak), Shipping (Skynet/TheCourierGuy).
+            Branches: Junction 14, Checkers Centre, Esikhawini, Mbazwana. 
+            Keep answers professional, entrepreneurial, and helpful. Mention Richards Bay if they ask about location.`;
+            
+            const response = await callGemini(text, sys);
+            aiMsg.innerText = response;
+            aiMsg.classList.remove('ai-pulse');
+            history.scrollTop = history.scrollHeight;
+        }
+
+        // Initialize with smooth fade-in
+        window.addEventListener('load', () => {
+            document.body.classList.add('fade-in');
+        });
+    </script>
 </body>
 </html>
