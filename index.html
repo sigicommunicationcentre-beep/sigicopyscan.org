@@ -1227,13 +1227,74 @@
             <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold text-blue-400/50 tracking-widest uppercase">
                 <p>&copy; 2025 Sigi Communication Centre. All rights reserved. FASA Full Member.</p>
                 <div class="flex gap-6">
-                    <a href="#hero" class="hover:text-blue-300 transition">Privacy Policy</a>
+                    <a href="#" onclick="event.preventDefault();document.getElementById('privacy-modal').classList.remove('hidden');document.getElementById('privacy-modal').classList.add('flex');" class="hover:text-blue-300 transition">Privacy Policy</a>
                     <a href="#hero" class="hover:text-blue-300 transition">Terms of Investment</a>
                     <a href="BEE.pdf" target="_blank" rel="noopener noreferrer" class="hover:text-blue-300 transition">BEE Certificate</a>
                 </div>
             </div>
         </div>
     </footer>
+
+    <!-- ========================================== -->
+    <!-- PRIVACY POLICY MODAL                       -->
+    <!-- ========================================== -->
+    <div id="privacy-modal" class="fixed inset-0 z-[200] hidden items-center justify-center bg-black/70 backdrop-blur-sm">
+        <div class="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-[95%] max-h-[85vh] overflow-y-auto mx-4 p-8 md:p-10">
+            <button onclick="document.getElementById('privacy-modal').classList.add('hidden');document.getElementById('privacy-modal').classList.remove('flex');" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl font-bold leading-none" aria-label="Close">&times;</button>
+            <h2 class="text-2xl font-black text-blue-900 mb-1">Privacy Policy</h2>
+            <p class="text-lg font-bold text-blue-700 mb-1">Sigi Communication Centre</p>
+            <p class="text-sm text-gray-500 mb-6">Effective Date: February 21, 2026</p>
+            <p class="text-sm text-gray-700 mb-6">At Sigi Communication Centre, we believe in your dreams and are committed to helping you take the next step safely. This Privacy Policy explains how we collect, use, and protect your personal information across our physical branches and our digital platform, Sigicopyscan.org.</p>
+
+            <h3 class="text-base font-bold text-blue-900 mt-6 mb-2">1. Information We Collect</h3>
+            <p class="text-sm text-gray-700 mb-2">We collect information necessary to provide communication, scanning, and document services. This includes:</p>
+            <ul class="list-disc list-inside text-sm text-gray-700 space-y-1 mb-4 pl-2">
+                <li><strong>Personal Identifiers:</strong> Name, phone number, and email address when you request a service or create an account.</li>
+                <li><strong>Document Content:</strong> Files, images, or physical documents provided for scanning, printing, or digital processing.</li>
+                <li><strong>Transaction Information:</strong> Records of services provided and payment confirmations.</li>
+                <li><strong>Technical Data:</strong> For users of Sigicopyscan.org, we may collect IP addresses and browser types to ensure site security and functionality.</li>
+            </ul>
+
+            <h3 class="text-base font-bold text-blue-900 mt-6 mb-2">2. How We Use Your Information</h3>
+            <p class="text-sm text-gray-700 mb-2">Your data is used strictly for the following:</p>
+            <ul class="list-disc list-inside text-sm text-gray-700 space-y-1 mb-4 pl-2">
+                <li><strong>Service Delivery:</strong> Processing your scans, prints, and communication requests.</li>
+                <li><strong>Communication:</strong> Sending notifications regarding your orders or responding to inquiries.</li>
+                <li><strong>Compliance:</strong> Meeting legal obligations under South African law (e.g., tax records).</li>
+                <li><strong>Improvement:</strong> Analyzing how our digital tools are used to provide a better user experience.</li>
+            </ul>
+
+            <h3 class="text-base font-bold text-blue-900 mt-6 mb-2">3. Protection of Personal Information (POPIA)</h3>
+            <p class="text-sm text-gray-700 mb-2">In accordance with the Protection of Personal Information Act (POPIA) of South Africa:</p>
+            <ul class="list-disc list-inside text-sm text-gray-700 space-y-1 mb-4 pl-2">
+                <li>We only collect data for specific, explicitly defined, and lawful purposes.</li>
+                <li>We take reasonable steps to ensure your personal information is complete, accurate, and updated where necessary.</li>
+                <li><strong>Security Safeguards:</strong> We use administrative and technical measures (such as encrypted servers and secure physical filing) to prevent unauthorized access or loss of data.</li>
+            </ul>
+
+            <h3 class="text-base font-bold text-blue-900 mt-6 mb-2">4. Document Retention &amp; Deletion</h3>
+            <p class="text-sm text-gray-700 mb-2">For our scanning services (Sigicopyscan.org):</p>
+            <ul class="list-disc list-inside text-sm text-gray-700 space-y-1 mb-4 pl-2">
+                <li><strong>Temporary Storage:</strong> Uploaded digital documents are stored only for the duration of the processing period.</li>
+                <li><strong>Auto-Deletion:</strong> Unless otherwise requested by the user, digital files are purged from our servers within 24 hours of the service completion to ensure your private information remains private.</li>
+            </ul>
+
+            <h3 class="text-base font-bold text-blue-900 mt-6 mb-2">5. Third-Party Disclosure</h3>
+            <p class="text-sm text-gray-700 mb-2">We do not sell or rent your personal data. We only share information with third parties when:</p>
+            <ul class="list-disc list-inside text-sm text-gray-700 space-y-1 mb-4 pl-2">
+                <li>It is necessary to complete a transaction (e.g., a secure payment gateway).</li>
+                <li>We are required by law or a court order to do so.</li>
+            </ul>
+
+            <h3 class="text-base font-bold text-blue-900 mt-6 mb-2">6. Your Rights</h3>
+            <p class="text-sm text-gray-700 mb-2">You have the right to:</p>
+            <ol class="list-decimal list-inside text-sm text-gray-700 space-y-1 mb-4 pl-2">
+                <li><strong>Request Access:</strong> See what personal information we hold about you.</li>
+                <li><strong>Request Correction:</strong> Fix any inaccuracies in your data.</li>
+                <li><strong>Request Deletion:</strong> Ask us to remove your personal information from our records (subject to legal retention requirements).</li>
+            </ol>
+        </div>
+    </div>
 
     <!-- ========================================== -->
     <!-- FLOATING WHATSAPP BUTTON                   -->
@@ -1296,6 +1357,14 @@
             el.style.transform = 'translateY(20px)';
             el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(el);
+        });
+
+        // Privacy modal: close on backdrop click
+        document.getElementById('privacy-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.add('hidden');
+                this.classList.remove('flex');
+            }
         });
     </script>
 </body>
